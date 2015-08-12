@@ -11,7 +11,7 @@ import sys
 # Data is logged by polling voltage from RLP
 
 # User Configurable Settings
-ev = 12820 # Ending voltage in mV
+ev =  10500 # Ending voltage in mV
 cap = 7500 # Battery's capacity is mAh
 c_rate = 0.05 # Discharge rate. Should be 0.05 (ie C-20)
 log_int = 10 # logging interval in seconds
@@ -53,6 +53,12 @@ def rlp_log(log_name, t_time, v):
 	with open(log_name, 'a') as log:
 		log.write(str(format(t_time, '.0f'))+", "+str(v)+", "+str(c_rate)+"\n")
 
+# End the discharge test
+def rlp_end():
+	rlp_write(0)
+	ser.close()
+	sys.exit()
+
 def main():
 	global ev
 	global log_int
@@ -62,6 +68,7 @@ def main():
 	log_entries = 0
 	v = rlp_read(5)
 	dr = int(cap * c_rate)
+	end = 20*60*60 # end time in seconds
 
 	# Verify battery can be discharged
 	if (v < ev):
@@ -85,8 +92,9 @@ def main():
 		if v < ev:
 			print("Reached min voltage, exiting")
 			rlp_log(log_name, now, v)
-			rlp_write(0)
-			ser.close()
-			sys.exit()
+			rlp_end()
+		elif now >= end:
+			print("Reached 20 hours of test, exiting")
+			rlp_end()
 
 main()
