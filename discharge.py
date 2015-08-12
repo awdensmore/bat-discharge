@@ -2,6 +2,13 @@ import serial
 import time
 import sys
 
+# Theory of operation
+# Discharge the battery as per the "dr" rate in user settings
+# until the voltage reaches "ev". At that point, reduce the
+# discharge rate by 20%, then continue to discharge until the
+# voltage again reaches "ev". Iterate until the discharge rate
+# reaches "dr_min", then stop discharging and exit.
+
 # User Configurable Settings
 ev = 10500 # Ending voltage in mV
 dr = 1500 # Discharge rate in mA
