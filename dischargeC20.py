@@ -14,16 +14,16 @@ import sys
 ev =  10500 # Ending voltage in mV
 cap = 7500 # Battery's capacity is mAh
 c_rate = 0.05 # Discharge rate. Should be 0.05 (ie C-20)
-log_int = 10 # logging interval in seconds
+log_int = 60 # logging interval in seconds
 usb_id = "/dev/ttyUSB0"
 
 ser = serial.Serial(usb_id, 115200, timeout=1)
 time.sleep(0.1)
 
 def rlp_read(digits):
-	time.sleep(0.05)
+	time.sleep(0.5)
 	ser.write('read\r')
-	time.sleep(0.1)
+	time.sleep(0.2)
 	bytes = ser.inWaiting() - 1
 	start = -1 * (digits + 1)
 	ret_str = ser.read(bytes)
@@ -51,7 +51,7 @@ def rlp_log(log_name, t_time, v):
 	# v = voltage to record in log file
 	global c_rate
 	with open(log_name, 'a') as log:
-		log.write(str(format(t_time, '.0f'))+", "+str(v)+", "+str(c_rate)+"\n")
+		log.write(str(format(t_time/60, '.0f'))+", "+str(v)+", "+str(c_rate)+"\n")
 
 # End the discharge test
 def rlp_end():
