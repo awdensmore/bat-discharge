@@ -12,7 +12,7 @@ import sys
 
 # User Configurable Settings
 ev =  10500 # Ending voltage in mV
-cap = 7500 # Battery's capacity is mAh
+cap = 12000 # Battery's capacity is mAh
 c_rate = 0.05 # Discharge rate. Should be 0.05 (ie C-20)
 log_int = 60 # logging interval in seconds
 usb_id = "/dev/ttyUSB0"
